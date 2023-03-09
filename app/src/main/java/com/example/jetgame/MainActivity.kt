@@ -13,8 +13,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TableLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 
 class MainActivity : AppCompatActivity() {
     lateinit var score : TextView
@@ -53,9 +53,9 @@ class MainActivity : AppCompatActivity() {
 
         //Animation for coin
         coin_Animation(coin, screenWidth,bullet,score)
+        val rocketLinear = findViewById<TableLayout>(R.id.rocket)
 
-
-        ship.setOnTouchListener(object : View.OnTouchListener {
+        rocketLinear.setOnTouchListener(object : View.OnTouchListener {
             var dx = 0f
             var bulletStartX = 0f
             var bulletStartY = 0f
@@ -92,8 +92,8 @@ class MainActivity : AppCompatActivity() {
                     }
                     MotionEvent.ACTION_UP -> {
                         if (!isBulletFired) {
-                            fireBullet(bullet, view)
-                            ship.isEnabled = false
+                            fireBullet(bullet, ship)
+                            rocketLinear.isEnabled = false
                         }
                     }
                 }
@@ -111,15 +111,19 @@ class MainActivity : AppCompatActivity() {
 
                 animator.addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        ship.isEnabled = true
+                        // Move the bullet back to the starting position
+                        bullet.x = ship.x + (ship.width / 2) - (bullet.width / 2)
+                        bullet.y = ship.y - (ship.height)+50
+//                        isBulletFired = false
+                        rocketLinear.isEnabled = true
                     }
                 })
 
                 // start the animation
                 animator.start()
             }
-        })
-
+        }
+        )
     }
 
 
@@ -159,31 +163,42 @@ class MainActivity : AppCompatActivity() {
         //for checking intersection
         leftToRightAnimation.addUpdateListener {
             // check if the two images are intersecting
-            if (isIntersecting(coin, bullet__)) {
-                // do something
-                var scToString = score_.text.toString()
-                score_.text = (scToString.toInt()+1).toString()
+            if (coin.isAttachedToWindow) {
+                // Get the screen coordinates of the coin
+                val coinScreenRect = Rect()
+                coin.getGlobalVisibleRect(coinScreenRect)
+
+                // Get the screen coordinates of the bullet
+                val bulletScreenRect = Rect()
+                bullet__.getGlobalVisibleRect(bulletScreenRect)
+
+                // Check if the coin and the bullet intersect
+                if (coinScreenRect.intersect(bulletScreenRect)) {
+                    // Increase the score
+                    score_.text = (score_.text.toString().toInt() + 1).toString()
+                }
             }
         }
 
         rightToLeftAnimation.addUpdateListener {
             // check if the two images are intersecting
-            if (isIntersecting(coin, bullet__)) {
-                // do something
-                var scToString = score_.text.toString()
-                score_.text = (scToString.toInt()+1).toString()
 
+            if (coin.isAttachedToWindow) {
+                // Get the screen coordinates of the coin
+                val coinScreenRect = Rect()
+                coin.getGlobalVisibleRect(coinScreenRect)
+
+                // Get the screen coordinates of the bullet
+                val bulletScreenRect = Rect()
+                bullet__.getGlobalVisibleRect(bulletScreenRect)
+
+                // Check if the coin and the bullet intersect
+                if (coinScreenRect.intersect(bulletScreenRect)) {
+                    // Increase the score
+                    score_.text = (score_.text.toString().toInt() + 1).toString()
+                }
             }
         }
 
-    }
-    private fun isIntersecting(view1: View, view2: View): Boolean {
-        val rect1 = Rect()
-        view1.getHitRect(rect1)
-
-        val rect2 = Rect()
-        view2.getHitRect(rect2)
-
-        return rect1.intersect(rect2)
     }
 }

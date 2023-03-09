@@ -49,7 +49,7 @@
 
     <ImageView
         android:id="@+id/coin"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="90dp"
         android:src="@drawable/coin"
         android:visibility="invisible"
@@ -75,32 +75,43 @@
         app:layout_constraintGuide_percent="0.65" />
 
 
+    <TableLayout
+        android:id="@+id/rocket"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/bullet"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:layout_marginTop="50dp"
             android:layout_gravity="center"
             android:src="@drawable/bullet"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/horizontal5"
-            app:layout_constraintDimensionRatio="1,0.12"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/horizontal3" />
+            android:visibility="invisible" />
+        <!--            app:layout_constraintBottom_toTopOf="@+id/horizontal5"-->
+        <!--            app:layout_constraintDimensionRatio="1,0.12"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/horizontal3" />-->
         <ImageView
             android:id="@+id/ship"
             android:layout_width="120dp"
             android:layout_height="100dp"
+            android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:src="@drawable/spaceship"
-            android:visibility="invisible"
-            app:layout_constraintDimensionRatio="1,0.7"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/horizontal4" />
+            android:visibility="invisible" />
+        <!--            app:layout_constraintDimensionRatio="1,0.7"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/horizontal4" />-->
+    </TableLayout>
 
     <!--GuideLine horizontal4 : 80%-->
     <androidx.constraintlayout.widget.Guideline
@@ -184,7 +195,6 @@
             android:drawableRight="@drawable/ic_baseline_thumb_up_24"
             android:textSize="22sp"
             android:textColor="@color/white"/>
-
 
     </LinearLayout>
 
