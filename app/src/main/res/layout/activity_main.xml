@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parent_layout"
     android:background="@drawable/univers_bg"
     tools:context=".MainActivity">
 
@@ -12,6 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="right"
+        android:visibility="invisible"
         android:layout_marginTop="10dp"
         android:text="PROFIT: "
         android:textColor="@color/white"
@@ -28,6 +30,7 @@
         android:layout_height="0dp"
         android:gravity="left"
         android:layout_marginTop="10dp"
+        android:visibility="invisible"
         android:text="0"
         android:textColor="@color/white"
         android:textSize="45sp"
@@ -47,8 +50,9 @@
     <ImageView
         android:id="@+id/coin"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="90dp"
         android:src="@drawable/coin"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/horizontal2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,35 +74,50 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.65" />
 
-    <ImageView
-        android:id="@+id/bullet"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/bullet"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal4"
-        app:layout_constraintDimensionRatio="1,0.15"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/horizontal3" />
 
-    <!--GuideLine horizontal4 : 65%-->
+
+        <ImageView
+            android:id="@+id/bullet"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/bullet"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/horizontal5"
+            app:layout_constraintDimensionRatio="1,0.12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/horizontal3" />
+        <ImageView
+            android:id="@+id/ship"
+            android:layout_width="120dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/spaceship"
+            android:visibility="invisible"
+            app:layout_constraintDimensionRatio="1,0.7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/horizontal4" />
+
+    <!--GuideLine horizontal4 : 80%-->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.80" />
+    <!--GuideLine horizontal4 : 85%-->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
 
-    <ImageView
-        android:id="@+id/ship"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/spaceship"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/horizontal4" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -106,6 +125,68 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.6" />
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#94318ED6"
+        android:visibility="visible"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/cancel_instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_cancel_24"
+            android:layout_gravity="right"
+            android:padding="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How to Play!"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Align your spaceship and shoot."
+            android:drawableLeft="@drawable/ic_baseline_star_24"
+            android:textSize="22sp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shoot on Coin and Earn Profit"
+            android:drawableLeft="@drawable/ic_baseline_star_24"
+            android:textSize="22sp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Best Of Luck"
+            android:layout_gravity="center"
+            android:drawableRight="@drawable/ic_baseline_thumb_up_24"
+            android:textSize="22sp"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

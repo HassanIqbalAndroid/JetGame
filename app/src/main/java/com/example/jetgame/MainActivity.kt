@@ -4,19 +4,27 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class MainActivity : AppCompatActivity() {
     lateinit var score : TextView
     lateinit var coin : ImageView
     lateinit var bullet : ImageView
     lateinit var ship : ImageView
+    lateinit var instruction: LinearLayout
+    lateinit var close: ImageView
+
+    @SuppressLint("MissingInflatedId", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,34 +34,92 @@ class MainActivity : AppCompatActivity() {
         bullet = findViewById(R.id.bullet)
         ship = findViewById(R.id.ship)
         score = findViewById(R.id.Score_counter)
+        instruction = findViewById(R.id.linear)
+        close = findViewById(R.id.cancel_instructions)
 
+
+        //instruction Close and all other things will be visible
+        close.setOnClickListener(){
+            instruction.visibility = View.GONE
+            val profit = findViewById<TextView>(R.id.profit)
+            profit.visibility = View.VISIBLE
+            score.visibility = View.VISIBLE
+            coin.visibility = View.VISIBLE
+            bullet.visibility = View.VISIBLE
+            ship.visibility = View.VISIBLE
+
+        }
         val screenWidth = Resources.getSystem().displayMetrics.widthPixels.toFloat()
+
         //Animation for coin
         coin_Animation(coin, screenWidth,bullet,score)
 
-        ship.setOnClickListener(){
-            ship.isEnabled = false
-            // get the current Y position of the image view
-            val currentY = bullet.translationY
 
-            // create an ObjectAnimator to animate the image view
-            val animator = ObjectAnimator.ofFloat(bullet, "translationY", currentY, currentY - 1100f)
+        ship.setOnTouchListener(object : View.OnTouchListener {
+            var dx = 0f
+            var bulletStartX = 0f
+            var bulletStartY = 0f
+            var isBulletFired = false
 
-            // set the duration of the animation to 1 second
-            animator.duration = 200
+            override fun onTouch(view: View, event: MotionEvent): Boolean {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        dx = event.rawX - view.x
 
-            animator.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    // create a new ObjectAnimator to move the image view back to its original position
-                    val downAnimator = ObjectAnimator.ofFloat(bullet, "translationY", currentY)
-                    downAnimator.duration = 1
-                    downAnimator.start()
-                    ship.isEnabled = true
+                        // Save the starting position of the bullet
+                        bulletStartX = bullet.x
+                        bulletStartY = bullet.y
+
+                        // Set a flag to indicate that the bullet hasn't been fired yet
+                        isBulletFired = false
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        var x = event.rawX - dx
+
+                        // Limit the ship's movement to within the screen bounds
+                        if (x < 0) {
+                            x = 0f
+                        }
+                        if (x + view.width > screenWidth) {
+                            x = screenWidth - view.width
+                        }
+
+                        // Move the ship and the bullet
+                        view.x = x
+                        if (isBulletFired) {
+                            bullet.y -= 30 // move the bullet upward
+                        }
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        if (!isBulletFired) {
+                            fireBullet(bullet, view)
+                            ship.isEnabled = false
+                        }
+                    }
                 }
-            })
-            // start the animation
+                return true
+            }
+            private fun fireBullet(bullet: ImageView, ship: View) {
+                val screenHeight = Resources.getSystem().displayMetrics.heightPixels.toFloat()
+                // Set the starting position of the bullet to the center of the ship
+                bullet.x = ship.x + (ship.width / 2) - (bullet.width / 2)
+                bullet.y = ship.y
+
+                // create an ObjectAnimator to animate the bullet
+                val animator = ObjectAnimator.ofFloat(bullet, "translationY", -screenHeight)
+                animator.duration = 500 // animation duration in milliseconds
+
+                animator.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        ship.isEnabled = true
+                    }
+                })
+
+                // start the animation
                 animator.start()
             }
+        })
+
     }
 
 
@@ -77,7 +143,6 @@ class MainActivity : AppCompatActivity() {
         // start the animation
         animatorSet.start()
         //for Looping Animation
-
         animatorSet.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {}
 
